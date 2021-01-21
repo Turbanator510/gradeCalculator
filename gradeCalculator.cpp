@@ -7,8 +7,8 @@ using namespace std;
 
 //Student class holding all information variables and fucntions
 class Student {
-        vector<int> scores; 
-        int currentGrade, finalScore, finalGrade;
+        vector<float> scores; 
+        float currentGrade, finalScore, finalGrade;
         char letterGrade;
     public:
         Student();
@@ -17,7 +17,9 @@ class Student {
         bool nameNotEntered, scoresNotEntered;
         void setName();
         void enterScores();
-
+        void displayCurrentGrade();
+        float calcCurrentGrade();
+        char getLetterGrade(float percentage);
 };
 
 Student::Student(){
@@ -39,9 +41,42 @@ void Student::enterScores(){
     for(int i=0; i<tests; i++){
         cout << "Enter score for Test " << i+1 << endl;
         cin >> scores[i];
-        cout << "Test " << i+1 << "score is " << scores[i] << endl;
+        cout << "Test " << i+1 << " score is " << scores[i] << endl;
     }
-    scoresNotEntered - false;
+    scoresNotEntered = false;
+}
+
+void Student::displayCurrentGrade(){
+    cout << "Current grade: " << this->getLetterGrade(this->calcCurrentGrade()) << " " <<
+    this->currentGrade << "%\n";
+}
+
+float Student::calcCurrentGrade(){
+    for(int i=0; i<tests; i++){
+        currentGrade += scores[i];
+    }
+    currentGrade = float(currentGrade / tests);
+    cout << currentGrade << endl;
+    return currentGrade;
+}
+
+char Student::getLetterGrade(float percentage){
+    if (percentage >= 90){
+		letterGrade = 'A';
+    }
+	else if (percentage >= 80){
+		letterGrade = 'B';
+    }
+	else if (percentage >= 70){
+		letterGrade = 'C';
+    }
+	else if (percentage >= 60){
+		letterGrade = 'D';
+    }
+	else{
+		letterGrade = 'F';
+    }
+    return letterGrade;
 }
 
 //cout << "____________________\n";
@@ -62,8 +97,17 @@ int main(){
         if(option == 1){
             stud->setName();
         }
-        if(option == 2){
+        else if(option == 2){
             stud->enterScores();
+        }
+        else if(option == 3){
+            if(stud->scoresNotEntered){
+                cout << "Scores have not been entered yet.\n" << 
+                "Please enter option 2 to enter scores first.\n";
+            }
+            else{
+                stud->displayCurrentGrade();
+            }
         }
         else{
             cout << "Not a menu option\n";
