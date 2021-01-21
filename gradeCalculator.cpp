@@ -1,23 +1,40 @@
 #include <iostream>
+#include <string>
 #include <vector>
 
 using namespace std;
 
-class student {
-        vector<int> scores;
+//Student class holding all information variables and fucntions
+class Student {
+        vector<int> scores; 
         int gradePercentage;
         char letterGrade;
     public:
+        Student();
         string name;
         int ID, tests;
         bool nameNotEntered, IDNotEntered, scoresNotEntered;
+        void setName();
 };
 
+Student::Student(){
+    nameNotEntered = true;
+    IDNotEntered = true;
+    scoresNotEntered = true;
+}
+
+void Student::setName(){
+    cout << "Enter student name:\n";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Student name is " << name << endl;
+    nameNotEntered = false;
+}
 
 //cout << "____________________\n";
 int main(){
     int option = 0;
-
+    Student *stud = new Student;
     while(option != 6){
         cout << "____________________\n";
         cout << "Menu:\n";
@@ -29,6 +46,13 @@ int main(){
         cout << "[6] Quit\n";
         cout << "____________________\n";
         cin >> option;
+        if(option == 1){
+            stud->setName();
+        }
+        else{
+            cout << "Not a menu option\n";
+        }
     }
+    cout << "*Quit Program*\n";
     return 0;
 }
