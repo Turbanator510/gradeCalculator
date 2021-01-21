@@ -4,31 +4,44 @@
 
 using namespace std;
 
+
 //Student class holding all information variables and fucntions
 class Student {
         vector<int> scores; 
-        int gradePercentage;
+        int currentGrade, finalScore, finalGrade;
         char letterGrade;
     public:
         Student();
         string name;
-        int ID, tests;
-        bool nameNotEntered, IDNotEntered, scoresNotEntered;
+        int  tests;
+        bool nameNotEntered, scoresNotEntered;
         void setName();
+        void enterScores();
+
 };
 
 Student::Student(){
     nameNotEntered = true;
-    IDNotEntered = true;
     scoresNotEntered = true;
 }
 
 void Student::setName(){
     cout << "Enter student name:\n";
-    cin.ignore();
-    getline(cin, name);
+    cin >> name;
     cout << "Student name is " << name << endl;
     nameNotEntered = false;
+}
+
+void Student::enterScores(){
+    cout << "How many test scores to enter:\n";
+    cin >> tests;
+    scores.resize(tests);
+    for(int i=0; i<tests; i++){
+        cout << "Enter score for Test " << i+1 << endl;
+        cin >> scores[i];
+        cout << "Test " << i+1 << "score is " << scores[i] << endl;
+    }
+    scoresNotEntered - false;
 }
 
 //cout << "____________________\n";
@@ -48,6 +61,9 @@ int main(){
         cin >> option;
         if(option == 1){
             stud->setName();
+        }
+        if(option == 2){
+            stud->enterScores();
         }
         else{
             cout << "Not a menu option\n";
