@@ -13,26 +13,31 @@ class Student {
         char letterGrade;
     public:
         Student();
-        string name;
+        string firstName, lastName;
         int  tests;
-        bool nameNotEntered, scoresNotEntered;
+        bool nameNotEntered, scoresNotEntered, minFinalNotEntered;
         void setName();
         void enterScores();
         void displayCurrentGrade();
         float calcCurrentGrade();
         char getLetterGrade(float percentage);
         void displayMinScore();
+        void displaySummary();
+        void displayFinalSummary();
 };
 
 Student::Student(){
     nameNotEntered = true;
     scoresNotEntered = true;
+    minFinalNotEntered = true;
 }
 
 void Student::setName(){
-    cout << "Enter student name:\n";
-    cin >> name;
-    cout << "Student name is " << name << endl;
+    cout << "Enter student first name:\n";
+    cin >> firstName;
+    cout << "Enter student last name:\n";
+    cin >> lastName;
+    cout << "Student name is " << firstName << " " << lastName << endl;
     nameNotEntered = false;
 }
 
@@ -41,7 +46,7 @@ void Student::enterScores(){
     cout << "How many test scores to enter:\n";
     cin >> tests;
 
-    if(tests < 0){
+    if(tests < 1){
         cout << "Invalid number of tests, returning to menu.\n";
     }
     else{
@@ -108,6 +113,23 @@ void Student::displayMinScore(){
 
     cout << "You need a minimum " << finalScore << "% on the final,\n";
     cout << "to get a final grade of " << finalGrade << "%\n";
+
+    minFinalNotEntered = false;
+}
+
+void Student::displaySummary(){
+    cout << "Student Name: " << firstName << " " << lastName << endl; 
+    cout << "Current Grade: " << letterGrade << " " << currentGrade << "%\n\n";
+    cout << "Test Scores:\n";
+    for(int i=0; i<tests; i++){
+        cout << setw(12) << "Test " << i+1 << ": " << scores[i] << "%\n";
+    }
+    cout << endl;
+}
+
+void Student::displayFinalSummary(){
+    cout << "Final Grade Desired: " << finalGrade << "%\n";
+    cout << "Final Score Needed: " << finalScore << "%\n";
 }
 
 
@@ -129,6 +151,7 @@ int main(){
         cout << "____________________\n";
 
         cin >> option;
+        cout << endl;
 
         if(option == 1){
             stud->setName();
@@ -138,8 +161,8 @@ int main(){
         }
         else if(option == 3){
             if(stud->scoresNotEntered){
-                cout << "Scores have not been entered yet.\n" << 
-                "Please enter option 2 to enter scores first.\n";
+                cout << "Scores have not been entered yet.\n"; 
+                cout << "Please enter option 2 to enter scores.\n";
             }
             else{
                 stud->displayCurrentGrade();
@@ -147,11 +170,30 @@ int main(){
         }
         else if(option == 4){
             if(stud->scoresNotEntered){
-                cout << "Scores have not been entered yet.\n" << 
-                "Please enter option 2 to enter scores first.\n";
+                cout << "Scores have not been entered yet.\n"; 
+                cout << "Please enter option 2 to enter scores.\n";
             }
             else{
                 stud->displayMinScore();
+            }
+        }
+        else if(option == 5){
+            if(stud->nameNotEntered){
+                cout << "Student name has not been entered yet.\n";
+                cout << "Please enter option 1 to enter name.\n";
+            }
+            else if(stud->scoresNotEntered){
+                cout << "Scores have not been entered yet.\n"; 
+                cout << "Please enter option 2 to enter scores.\n";
+            }
+            else{
+                if(stud->minFinalNotEntered){
+                    stud->displaySummary();
+                }
+                else{
+                    stud->displaySummary();
+                    stud->displayFinalSummary();
+                }
             }
         }
         else if(option == 6){
