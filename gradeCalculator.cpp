@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include <vector>
 
 using namespace std;
@@ -35,28 +36,42 @@ void Student::setName(){
 }
 
 void Student::enterScores(){
+    tests = 0;
     cout << "How many test scores to enter:\n";
     cin >> tests;
-    scores.resize(tests);
-    for(int i=0; i<tests; i++){
-        cout << "Enter score for Test " << i+1 << endl;
-        cin >> scores[i];
-        cout << "Test " << i+1 << " score is " << scores[i] << endl;
+
+    if(tests < 0){
+        cout << "Invalid number of tests, returning to menu.\n";
     }
-    scoresNotEntered = false;
+    else{
+        scores.resize(tests);
+        
+        for(int i=0; i<tests; i++){
+            cout << "Enter score for Test " << i+1 << endl;
+            cin >> scores[i];
+
+            if(scores[i] < 0){
+                cout << "Invalid score, Try Again.\n";
+                i--;
+            }
+        }
+        scoresNotEntered = false;
+    }
 }
 
 void Student::displayCurrentGrade(){
-    cout << "Current grade: " << this->getLetterGrade(this->calcCurrentGrade()) << " " <<
-    this->currentGrade << "%\n";
+    cout << "Current grade: " << this->getLetterGrade(this->calcCurrentGrade());
+    cout << " " << currentGrade << "%\n";
 }
 
 float Student::calcCurrentGrade(){
+    currentGrade = 0;
+
     for(int i=0; i<tests; i++){
         currentGrade += scores[i];
     }
+
     currentGrade = float(currentGrade / tests);
-    cout << currentGrade << endl;
     return currentGrade;
 }
 
@@ -79,10 +94,13 @@ char Student::getLetterGrade(float percentage){
     return letterGrade;
 }
 
-//cout << "____________________\n";
+
 int main(){
     int option = 0;
     Student *stud = new Student;
+    
+    cout << fixed << setprecision(2);
+
     while(option != 6){
         cout << "____________________\n";
         cout << "Menu:\n";
@@ -93,7 +111,9 @@ int main(){
         cout << "[5] Display student summary\n";
         cout << "[6] Quit\n";
         cout << "____________________\n";
+
         cin >> option;
+
         if(option == 1){
             stud->setName();
         }
@@ -109,10 +129,14 @@ int main(){
                 stud->displayCurrentGrade();
             }
         }
+        else if(option == 6){
+            cout << "*Quitting*\n";
+        }
         else{
-            cout << "Not a menu option\n";
+            cout << "Not a menu option, Try Again\n";
         }
     }
+
     cout << "*Quit Program*\n";
     return 0;
 }
