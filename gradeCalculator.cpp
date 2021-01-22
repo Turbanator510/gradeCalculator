@@ -21,6 +21,7 @@ class Student {
         void displayCurrentGrade();
         float calcCurrentGrade();
         char getLetterGrade(float percentage);
+        void displayMinScore();
 };
 
 Student::Student(){
@@ -94,6 +95,21 @@ char Student::getLetterGrade(float percentage){
     return letterGrade;
 }
 
+void Student::displayMinScore(){
+    float finalWeight = 0;
+
+    cout << "What is your final exam weight?\n";
+    cin >> finalWeight;
+    cout << "What is your desired final grade?\n";
+    cin >> finalGrade;
+
+    finalWeight *= 0.01;
+    finalScore = ((finalGrade - (currentGrade * (1 - finalWeight))) / finalWeight);
+
+    cout << "You need a minimum " << finalScore << "% on the final,\n";
+    cout << "to get a final grade of " << finalGrade << "%\n";
+}
+
 
 int main(){
     int option = 0;
@@ -107,7 +123,7 @@ int main(){
         cout << "[1] Enter student name.\n";
         cout << "[2] Enter test scores.\n";
         cout << "[3] Display current grade\n";
-        cout << "[4] Display minimum grade needed.\n";
+        cout << "[4] Display minimum final score needed.\n";
         cout << "[5] Display student summary\n";
         cout << "[6] Quit\n";
         cout << "____________________\n";
@@ -127,6 +143,15 @@ int main(){
             }
             else{
                 stud->displayCurrentGrade();
+            }
+        }
+        else if(option == 4){
+            if(stud->scoresNotEntered){
+                cout << "Scores have not been entered yet.\n" << 
+                "Please enter option 2 to enter scores first.\n";
+            }
+            else{
+                stud->displayMinScore();
             }
         }
         else if(option == 6){
